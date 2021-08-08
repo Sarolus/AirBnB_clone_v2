@@ -16,7 +16,7 @@ class FileStorage:
             dict_list = {}
 
             for key, value in FileStorage.__objects.items():
-                if cls == type(value):
+                if cls.__name__ == type(value).__name__:
                     dict_list[key] = value
             return dict_list
 
