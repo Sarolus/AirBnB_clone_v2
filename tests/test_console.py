@@ -18,6 +18,9 @@ class ConsoleCreateTest(unittest.TestCase):
 
     @classmethod
     def setUp(self):
+        """
+            Set up FileStorage objects dictionary
+        """
         try:
             os.rename("file.json", "tmp")
         except IOError:
@@ -26,6 +29,9 @@ class ConsoleCreateTest(unittest.TestCase):
 
     @classmethod
     def tearDown(self):
+        """
+            Delete any created file.json
+        """
         try:
             os.remove("file.json")
         except IOError:
@@ -126,6 +132,9 @@ class ConsoleCreateTest(unittest.TestCase):
             self.__testStringValueWithUnderscore(prmClassName)
 
     def __testCreateObject(self, prmClassName):
+        """
+            Test simple object creation.
+        """
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
                 "create {}".format(prmClassName)))
@@ -137,6 +146,9 @@ class ConsoleCreateTest(unittest.TestCase):
                 "{}.destroy({})".format(prmClassName, id)))
 
     def __testCreateObjectWithParameter(self, prmClassName):
+        """
+            Test object creation using parameters.
+        """
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
                 "create {} {}={}".format(prmClassName, 'name', 'California')))
@@ -151,6 +163,10 @@ class ConsoleCreateTest(unittest.TestCase):
                 "{}.destroy({})".format(prmClassName, id)))
 
     def __testStringValueWithUnderscore(self, prmClassName):
+        """
+            Test object creation using string value parameter
+            containing underscores.
+        """
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
                 "create {} {}={}".format(
@@ -168,6 +184,9 @@ class ConsoleCreateTest(unittest.TestCase):
                 "{}.destroy({})".format(prmClassName, id)))
 
     def __testCreateObjectWithInvalidParameter(self, prmClassName):
+        """
+            Test object creation using invalid parameter only.
+        """
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
                 "create {} {}".format(prmClassName, 'name')))
@@ -181,6 +200,9 @@ class ConsoleCreateTest(unittest.TestCase):
                 "{}.destroy({})".format(prmClassName, id)))
 
     def __testMixedValidityParameter(self, prmClassName):
+        """
+            Test object creation using valid & invalid parameters.
+        """
         with patch('sys.stdout', new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
                 "create {} {} {} {}={}".format(
@@ -199,6 +221,10 @@ class ConsoleCreateTest(unittest.TestCase):
                 "{}.destroy({})".format(prmClassName, id)))
 
     def __testMixedTypeParameter(self, prmClassName):
+        """
+            Test object creation using string, int and float
+            type values.
+        """
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(
                 "create {} {}={} {}={} {}={}".format(
@@ -224,4 +250,8 @@ class ConsoleCreateTest(unittest.TestCase):
                 "{}.destroy({})".format(prmClassName, id)))
 
     def __getObj(self, prmClassName: str, prmUuid: str):
+        """
+            Return the wanted object depending of the given
+            class name & ID.
+        """
         return storage.all()["{}.{}".format(prmClassName, prmUuid)]
