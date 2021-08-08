@@ -171,8 +171,8 @@ class ConsoleCreateTest(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(
                 "create {} {}={}".format(
                     prmClassName, 'name', 'My_little_house'
-                    )
-                ))
+                )
+            ))
             id = output.getvalue().strip()
             key = "{}.{}".format(prmClassName, id)
             self.assertIn(key, storage.all().keys())
