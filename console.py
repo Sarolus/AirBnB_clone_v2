@@ -114,13 +114,22 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def __type(self, prmStr: str):
+        """
+            Return typed value
+        """
         try:
             return int(prmStr)
-        except:
+        except Exception:
             try:
                 return float(prmStr)
             except Exception:
-                string = str(prmStr).replace('"', "").replace("'", "")
+                string = str(prmStr).replace(
+                    '"', ""
+                    ).replace(
+                        "'", ""
+                        ).replace(
+                            "_", " "
+                            )
                 return (string)
 
     def do_create(self, args):
@@ -128,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        
+
         argList = args.split()
 
         if argList[0] not in HBNBCommand.classes:
@@ -339,6 +348,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
