@@ -47,21 +47,20 @@ class DBStorage():
         """
         from models.state import State
         objList = {}
+        if type(cls) == str:
+            cls = eval(cls)
         if cls is None:
-            query = self.__session.query(
-                Amenity,
-                City,
-                Place,
-                Review,
-                State,
-                User
-            )
+            for cls in (City, State):
+                for obj in self.__session.query(cls):
+                    key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                    objList[key] = obj
         else:
             query = self.__session.query(cls)
 
-        for obj in query.all():
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            objList[key] = obj
+            for obj in query.all():
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                objList[key] = obj
+
         return objList
 
     def new(self, obj):
