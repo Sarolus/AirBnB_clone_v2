@@ -13,14 +13,14 @@ import os
 
 class DBStorage():
     """
-
+        This class manages storage of hbnb models in DB.
     """
     __engine = None
     __session = None
 
     def __init__(self):
         """
-
+            Initialize the DBStorage Class
         """
 
         env = os.environ.get('HBNB_ENV')
@@ -43,7 +43,8 @@ class DBStorage():
 
     def all(self, cls=None):
         """
-
+            Return a dictionary of all objects
+            from a class present in the database.
         """
         from models.state import State
         objList = {}
@@ -65,26 +66,26 @@ class DBStorage():
 
     def new(self, obj):
         """
-
+            Adds a new object to the database
         """
         self.__session.add(obj)
 
     def save(self):
         """
-
+        Saves all changes to the database
         """
         self.__session.commit()
 
     def delete(self, obj=None):
         """
-
+            Deletes an object from the database
         """
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
         """
-
+            Initialize all tables of the database
         """
         from models.state import State
         session_factory = sessionmaker(
