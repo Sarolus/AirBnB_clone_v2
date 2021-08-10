@@ -121,6 +121,7 @@ class ConsoleCreateTest(unittest.TestCase):
             self.__testMixedTypeParameter(prmClassName)
 
     @unittest.skipIf(
+        os.environ.get('HBNB_ENV') == 'test' and
         os.environ.get('HBNB_TYPE_STORAGE') != 'file',
         "File storage tests only"
     )

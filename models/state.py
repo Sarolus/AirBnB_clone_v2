@@ -3,6 +3,7 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
+from models.city import City
 import models
 import os
 
@@ -22,10 +23,10 @@ class State(BaseModel, Base):
                 Getter attribute for cities
             """
             allCities = models.storage.all(City)
-            stateCities = {}
+            stateCities = []
 
-            for key, city in allCities:
+            for city in list(allCities.values()):
                 if city.state_id == self.id:
-                    stateCities[key] = city
+                    stateCities.append(city)
 
             return stateCities

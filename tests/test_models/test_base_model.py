@@ -2,6 +2,7 @@
 """ """
 from models.base_model import BaseModel
 import unittest
+from unittest.case import skipIf
 import datetime
 from uuid import UUID
 import json
@@ -47,6 +48,10 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @skipIf(
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
+        "File storage tests only"
+    )
     def test_save(self):
         """ Testing save """
         i = self.value()
@@ -60,7 +65,7 @@ class test_basemodel(unittest.TestCase):
         """ """
         i = self.value()
         self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
+                         i.to_dict()))
 
     def test_todict(self):
         """ """
