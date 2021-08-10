@@ -18,7 +18,7 @@ class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
     __classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-                 "Place": Place, "Review": Review, "State": State, 
+                 "Place": Place, "Review": Review, "State": State,
                  "User": User}
 
     def setUp(self):
