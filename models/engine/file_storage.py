@@ -65,6 +65,7 @@ class FileStorage:
         """
         from models import storage
         if obj is not None:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            for key in storage.all():
-                del storage.all()[key]
+            for key, value in self.__objects.items():
+                if value is obj:
+                    tmp = key
+            self.__objects.pop(tmp)
