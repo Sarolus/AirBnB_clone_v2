@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ """
+from unittest.case import skipIf
 from tests.test_models.test_base_model import test_basemodel
 from models.amenity import Amenity
-from unittest.case import skipIf
 import os
 
 
@@ -16,7 +16,7 @@ class test_Amenity(test_basemodel):
         self.value = Amenity
 
     @skipIf(
-        os.environ.get('HBNB_TYPE_STORAGE') != file,
+        os.environ.get('HBNB_TYPE_STORAGE') != 'file',
         "File storage tests only"
     )
     def test_name2(self):

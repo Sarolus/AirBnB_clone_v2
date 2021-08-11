@@ -52,7 +52,7 @@ class DBStorage():
             cls = eval(cls)
         if cls is None:
             for cls in (Amenity, City, Place, Review, State, User):
-                for obj in self.__session.query(cls):
+                for obj in self.__session.query(cls).all():
                     key = "{}.{}".format(type(obj).__name__, obj.id)
                     objList[key] = obj
         else:
@@ -87,11 +87,9 @@ class DBStorage():
         """
             Initialize all tables of the database
         """
-        from models.state import State
+        Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
             bind=self.__engine, expire_on_commit=False
         )
-        Base.metadata.create_all(self.__engine)
-
         Session = scoped_session(session_factory)
         self.__session = Session()
