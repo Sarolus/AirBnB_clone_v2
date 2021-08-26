@@ -7,6 +7,24 @@ from datetime import datetime
 from fabric.api import local, put, run, env
 from os import path
 
+env.hosts = ['34.75.248.214', '35.229.37.122']
+env.key_identity_file = "~/.ssh/holberton"
+env.user = "ubuntu"
+
+
+def do_pack():
+    """
+        Packs the contents of web_static folder
+        in a .tgz archive using Fabric.
+    """
+    try:
+        currentDatetime = datetime.now().strftime("%Y%m%d%H%M%S")
+        archive = "versions/web_static_{}.tgz".format(currentDatetime)
+        local("mkdir -p versions")
+        local("tar -vzcf {} web_static".format(archive))
+    except Exception:
+        return None
+
 
 def do_deploy(archive_path):
     """
