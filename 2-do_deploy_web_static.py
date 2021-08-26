@@ -34,35 +34,39 @@ def do_deploy(archive_path):
             archive_path: path of the archive to deploy.
     """
     try:
-        filename = archive_path.split("/")[-1]
-        filename_no_ext = path.splitext(filename)
-        remote_data = "/data/web_static/releases"
+        archive = archive_path.split("/")[-1]
+        filename = archive.split(".")[0]
+        releases_path = "/data/web_static/releases"
 
         try:
-            put(archive_path, "/tmp/")
+            put(archive_path, "/tmp/{}".format(archive))
 
-            run("mkdir -p {}/{}/".format(remote_data, filename_no_ext))
+            run("mkdir -p {}/{}/".format(releases_path, filename))
             run("tar -xzf /tmp/{} -C {}/{}/".format(
-                filename,
-                remote_data,
-                filename_no_ext
+                archive,
+                releases_path,
+                filename
             ))
 
-            run("rm -f /tmp/{}".format(filename))
+            run("rm /tmp/{}".format(archive))
             run("mv {}/{}/web_static/* {}/{}/".format(
-                remote_data,
-                filename_no_ext,
-                remote_data,
-                filename_no_ext
+                releases_path,
+                filename,
+                releases_path,
+                filename
             ))
 
-            run("rm -rf {}/{}/web_static".format(remote_data, filename_no_ext))
+            run("rm -rf {}/{}/web_static".format(
+                releases_path,
+                filename
+            ))
             run("rm -rf /data/web_static/current")
 
             run("ln -s {}/{}/ /data/web_static/current".format(
-                remote_data,
-                filename_no_ext
+                releases_path,
+                filename
             ))
+            print("New version deployed!")
             return True
         except Exception:
             return False
