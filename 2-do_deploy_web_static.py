@@ -15,39 +15,38 @@ def do_deploy(archive_path):
         Args:
             archive_path: path of the archive to deploy.
     """
+    if not path.exists(archive_path):
+        return False
+
+    filename = archive_path.split("/")[-1]
+    filename_no_ext = path.splitext(filename)
+    remote_data = "/data/web_static/releases"
+
     try:
-        filename = archive_path.split("/")[-1]
-        filename_no_ext = path.splitext(filename)
-        remote_data = "/data/web_static/releases"
+        put(archive_path, "/tmp/")
 
-        try:
-            put(archive_path, "/tmp/")
+        run("mkdir -p {}{}/".format(remote_data, filename_no_ext))
+        run("tar -xzf /tmp/{} -C {}{}/".format(
+            filename,
+            remote_data,
+            filename_no_ext
+        ))
 
-            run("mkdir -p {}{}/".format(remote_data, filename_no_ext))
-            run("tar -xzf /tmp/{} -C {}{}/".format(
-                filename,
-                remote_data,
-                filename_no_ext
-            ))
+        run("rm -f /tmp/{}".format(filename))
+        run("mv {}/{}/web_static/* {}/{}/".format(
+            remote_data,
+            filename_no_ext,
+            remote_data,
+            filename_no_ext
+        ))
 
-            run("rm -f /tmp/{}".format(filename))
-            run("mv {}/{}/web_static/* {}/{}/".format(
-                remote_data,
-                filename_no_ext,
-                remote_data,
-                filename_no_ext
-            ))
+        run("rm -rf {}{}".format(remote_data, filename_no_ext))
+        run("rm -rf /data/web_static/current")
 
-            run("rm -rf {}{}".format(remote_data, filename_no_ext))
-            run("rm -rf /data/web_static/current")
-
-            run("ln -sf {}{}/ /data/web_static/current".format(
-                remote_data,
-                filename_no_ext
-            ))
-            return True
-        except Exception:
-            return False
-
-    except FileExistsError:
+        run("ln -sf {}{}/ /data/web_static/current".format(
+            remote_data,
+            filename_no_ext
+        ))
+        return True
+    except Exception:
         return False
