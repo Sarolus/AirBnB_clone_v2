@@ -17,7 +17,7 @@ def do_deploy(archive_path):
     """
     try:
         filename = archive_path.split("/")[-1]
-        filename_no_ext = filename.splitext(filename)
+        filename_no_ext = path.splitext(filename)
         remote_data = "/data/web_static/releases"
 
         try:
