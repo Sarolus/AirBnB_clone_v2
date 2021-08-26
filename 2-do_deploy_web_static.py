@@ -15,38 +15,39 @@ def do_deploy(archive_path):
         Args:
             archive_path: path of the archive to deploy.
     """
-    if not path.exists(archive_path):
-        return False
-
-    filename = archive_path.split("/")[-1]
-    filename_no_ext = path.splitext(filename)
-    remote_data = "/data/web_static/releases"
-
     try:
-        put(archive_path, "/tmp/")
+        filename = archive_path.split("/")[-1]
+        filename_no_ext = path.splitext(filename)
+        remote_data = "/data/web_static/releases"
 
-        run("mkdir -p {}{}/".format(remote_data, filename_no_ext))
-        run("tar -xzf /tmp/{} -C {}{}/".format(
-            filename,
-            remote_data,
-            filename_no_ext
-        ))
+        try:
+            put(archive_path, "/tmp/")
 
-        run("rm -f /tmp/{}".format(filename))
-        run("mv {}/{}/web_static/* {}/{}/".format(
-            remote_data,
-            filename_no_ext,
-            remote_data,
-            filename_no_ext
-        ))
+            run("mkdir -p {}/{}/".format(remote_data, filename_no_ext))
+            run("tar -xzf /tmp/{} -C {}/{}/".format(
+                filename,
+                remote_data,
+                filename_no_ext
+            ))
 
-        run("rm -rf {}{}".format(remote_data, filename_no_ext))
-        run("rm -rf /data/web_static/current")
+            run("rm -f /tmp/{}".format(filename))
+            run("mv {}/{}/web_static/* {}/{}/".format(
+                remote_data,
+                filename_no_ext,
+                remote_data,
+                filename_no_ext
+            ))
 
-        run("ln -sf {}{}/ /data/web_static/current".format(
-            remote_data,
-            filename_no_ext
-        ))
-        return True
-    except Exception:
+            run("rm -rf {}/{}/web_static".format(remote_data, filename_no_ext))
+            run("rm -rf /data/web_static/current")
+
+            run("ln -s {}/{}/ /data/web_static/current".format(
+                remote_data,
+                filename_no_ext
+            ))
+            return True
+        except Exception:
+            return False
+
+    except FileNotFoundError:
         return False
