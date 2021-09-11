@@ -23,7 +23,7 @@ def states_list():
     """
         Display 7-states_list.html template on /states_list
     """
-    states = storage.all(State)
+    states = storage.all(State).values()
     return render_template("7-states_list.html", states=states)
 
 
