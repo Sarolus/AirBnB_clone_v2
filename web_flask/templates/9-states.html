@@ -7,7 +7,7 @@
         {% if not state %}
             <H1>Not found!</H1>
         {% else %}
-            <H1>State: Illinois</H1>
+            <H1>State: {{ state.name }}</H1>
             <H3>Cities:</H3>
             {% if state.cities | length > 0 -%}
                 {% with cities = state.cities -%}
