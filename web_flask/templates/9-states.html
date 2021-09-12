@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+        {% if not state %}
+            <H1>Not found!</H1>
+        {% else %}
+            <H1>State: Illinois</H1>
+            <H3>Cities:</H3>
+            {% if state.cities | length > 0 -%}
+                {% with cities = state.cities -%}
+                    {% include "_cities.html" %}
+                {%- endwith %}
+            {%- endif %}
+        {% endif %}
+    </BODY>
+</HTML>
